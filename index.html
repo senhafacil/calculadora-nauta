@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico de Preço — Nauta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF7F2;--cream2:#F3EEE6;--cream3:#EAE3D6;
+  --terra:#C17B4E;--terra-d:#9B5E35;--terra-l:#F0DDD0;
+  --verde:#3D8B5F;--verde-l:#D4EDDF;
+  --rubi:#9B3A4A;--rubi-l:#F2D8DC;
+  --amber:#B8952A;--amber-l:#F5EDD0;
+  --carvao:#2C2416;--carvao2:#4A3F30;
+  --cinza:#7A6F62;--cinza-l:#C5BDB3;
+  --branco:#FFFDF9;--borda:#E0D8CE;
+  --r:10px;--r-l:16px;
+  --shadow:0 2px 14px rgba(44,36,22,.09);
+  --shadow-m:0 8px 40px rgba(44,36,22,.18);
+}
+body{font-family:'DM Sans',sans-serif;font-size:14px;color:var(--carvao);background:var(--cream);min-height:100vh}
+
+/* HEADER */
+.header{background:var(--carvao);padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'DM Serif Display',serif;font-size:20px;color:#FAF7F2;display:flex;align-items:center;gap:8px}
+.logo-dot{width:7px;height:7px;border-radius:50%;background:var(--terra);flex-shrink:0}
+.logo-sub{font-size:11px;color:rgba(255,255,255,.35);font-weight:300;margin-top:2px;font-family:'DM Sans',sans-serif}
+.header-badge{font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.1)}
+
+/* LAYOUT */
+.wrap{max-width:1000px;margin:0 auto;padding:28px 18px 0}
+.hero{margin-bottom:26px;text-align:center}
+.hero-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--carvao);line-height:1.2}
+.hero-sub{font-size:13px;color:var(--cinza);margin-top:6px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media(max-width:680px){.grid{grid-template-columns:1fr}}
+
+/* CARD */
+.card{background:var(--branco);border:1px solid var(--borda);border-radius:var(--r-l);padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.card:last-child{margin-bottom:0}
+.card-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--cinza);margin-bottom:16px;display:flex;align-items:center;gap:7px}
+.card-title .ico{font-size:15px}
+.divider{border:none;border-top:1px solid var(--cream3);margin:14px 0}
+
+/* PREÇO COBRADO */
+.preco-box{background:var(--carvao);border-radius:var(--r-l);padding:18px 20px;margin-bottom:16px}
+.preco-box-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.preco-inp-wrap{display:flex;align-items:center;gap:10px}
+.preco-prefix{font-size:22px;font-weight:700;color:rgba(255,255,255,.35);font-family:'DM Serif Display',serif;flex-shrink:0}
+.preco-inp{flex:1;background:transparent;border:none;outline:none;font-size:38px;font-weight:700;color:#FAF7F2;font-family:'DM Serif Display',serif;letter-spacing:-1px;width:100%}
+.preco-inp::placeholder{color:rgba(255,255,255,.18)}
+.preco-inp::-webkit-inner-spin-button,.preco-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.preco-inp[type=number]{-moz-appearance:textfield}
+.preco-hint{font-size:11px;color:rgba(255,255,255,.28);margin-top:8px}
+
+/* INSUMOS */
+.section-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:2px solid var(--cream3);margin-bottom:12px}
+.section-header-lbl{font-size:12px;font-weight:700;color:var(--carvao2)}
+.section-header-sub{font-size:11px;color:var(--cinza);font-style:italic}
+
+.ins-row{border:1.5px solid var(--borda);border-radius:var(--r);background:var(--branco);margin-bottom:8px;overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.ins-row:focus-within{border-color:var(--terra);box-shadow:0 0 0 3px rgba(193,123,78,.12)}
+.ins-row-nome{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--cream);border-bottom:1px solid var(--borda)}
+.ins-row-nome .pencil{font-size:11px;color:var(--cinza-l);flex-shrink:0}
+.ins-row-nome input{flex:1;background:transparent;border:none;outline:none;font-size:13px;font-weight:500;color:var(--carvao2);font-family:'DM Sans',sans-serif;cursor:text}
+.ins-row-nome input::placeholder{color:var(--cinza-l);font-weight:400;font-style:italic;font-size:12px}
+.ins-row-val{display:flex;align-items:center}
+.ins-row-prefix{padding:0 10px;font-size:13px;font-weight:600;color:var(--cinza);flex-shrink:0}
+.ins-row-inp{flex:1;border:none;outline:none;padding:9px 0;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--carvao);background:transparent;min-width:0}
+.ins-row-inp::placeholder{color:var(--cinza-l);font-weight:400;font-size:12px}
+.ins-row-inp::-webkit-inner-spin-button,.ins-row-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.ins-row-inp[type=number]{-moz-appearance:textfield}
+.ins-row-del{background:none;border:none;cursor:pointer;font-size:13px;color:var(--cinza-l);padding:0 12px;flex-shrink:0;transition:color .15s;line-height:1}
+.ins-row-del:hover{color:var(--rubi)}
+
+.btn-add{width:100%;padding:9px;border:1.5px dashed var(--terra);border-radius:var(--r);background:var(--terra-l);color:var(--terra-d);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;margin-bottom:10px}
+.btn-add:hover{background:var(--terra);color:#fff}
+
+.bloco-total{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--cream2);border-radius:var(--r);font-size:12px}
+.bloco-total strong{font-size:15px;color:var(--rubi)}
+
+/* CUSTO FIXO */
+.fg{margin-bottom:12px}
+.fg:last-child{margin-bottom:0}
+.fl{font-size:10px;font-weight:700;color:var(--cinza);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px;display:block}
+.fi{padding:9px 13px;border:1.5px solid var(--borda);border-radius:var(--r);font-size:13px;font-weight:600;background:var(--branco);color:var(--carvao);font-family:'DM Sans',sans-serif;width:100%;transition:border-color .15s,box-shadow .15s}
+.fi:focus{outline:none;border-color:var(--terra);box-shadow:0 0 0 3px rgba(193,123,78,.12)}
+.fi::placeholder{color:var(--cinza-l);font-weight:400}
+.fi-hint{font-size:10px;color:var(--cinza-l);margin-top:4px;line-height:1.5}
+
+/* OUTROS CUSTOS */
+.outro-row{border:1.5px solid var(--borda);border-radius:var(--r);background:var(--branco);margin-bottom:8px;overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.outro-row:focus-within{border-color:var(--terra);box-shadow:0 0 0 3px rgba(193,123,78,.12)}
+
+.outro-top{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--cream);border-bottom:1px solid var(--borda)}
+.outro-top .pencil{font-size:11px;color:var(--cinza-l);flex-shrink:0}
+.outro-top input[type=text]{flex:1;background:transparent;border:none;outline:none;font-size:13px;font-weight:500;color:var(--carvao2);font-family:'DM Sans',sans-serif}
+.outro-top input[type=text]::placeholder{color:var(--cinza-l);font-weight:400;font-style:italic;font-size:12px}
+
+.outro-bottom{display:flex;align-items:center}
+/* toggle % / R$ */
+.tipo-toggle{display:flex;flex-shrink:0;border-right:1px solid var(--borda)}
+.tipo-btn{
+  padding:9px 13px;font-size:12px;font-weight:700;cursor:pointer;
+  border:none;background:transparent;font-family:'DM Sans',sans-serif;
+  color:var(--cinza);transition:all .15s;
+}
+.tipo-btn.ativo{background:var(--carvao);color:#FAF7F2}
+.tipo-btn:first-child{border-right:1px solid var(--borda)}
+
+.outro-inp-wrap{flex:1;display:flex;align-items:center;min-width:0}
+.outro-prefix{padding:0 8px;font-size:13px;font-weight:600;color:var(--cinza);flex-shrink:0}
+.outro-inp{flex:1;border:none;outline:none;padding:9px 4px;font-size:15px;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--carvao);background:transparent;min-width:0}
+.outro-inp::placeholder{color:var(--cinza-l);font-weight:400;font-size:12px}
+.outro-inp::-webkit-inner-spin-button,.outro-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.outro-inp[type=number]{-moz-appearance:textfield}
+.outro-del{background:none;border:none;cursor:pointer;font-size:13px;color:var(--cinza-l);padding:0 12px;flex-shrink:0;transition:color .15s;line-height:1}
+.outro-del:hover{color:var(--rubi)}
+
+/* RESULTADO */
+.resultado-vazio{text-align:center;padding:48px 20px}
+.resultado-vazio .ico{font-size:40px;margin-bottom:12px}
+.resultado-vazio p{font-size:13px;line-height:1.6;color:var(--cinza)}
+
+.verdict{display:flex;flex-direction:column;align-items:center;padding:22px;border-radius:var(--r-l);margin-bottom:14px;text-align:center}
+.verdict-ico{font-size:30px;margin-bottom:6px}
+.verdict-sit{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.verdict-val{font-size:40px;font-weight:700;letter-spacing:-1.5px;line-height:1;font-family:'DM Serif Display',serif}
+.verdict-sub{font-size:12.5px;font-weight:500;margin-top:5px}
+
+.dr{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;border-radius:8px;font-size:13px;margin-bottom:5px}
+.dr-bg{background:var(--cream)}
+.dr-val{font-weight:600}
+
+.bar-wrap{margin:2px 0 14px}
+.bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--cinza);margin-bottom:4px}
+.bar{height:8px;background:var(--cream3);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .5s ease,background .3s}
+
+.comp-box{background:var(--cream2);border-radius:var(--r);padding:13px 14px}
+.comp-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--cinza);margin-bottom:9px}
+.comp-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:6px}
+.comp-row:last-child{margin-bottom:0}
+
+.sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:8px}
+.sim-cell{text-align:center;padding:10px 5px;border-radius:var(--r);border:1px solid var(--borda);background:var(--cream)}
+.sim-qty{font-size:10px;font-weight:700;color:var(--cinza);margin-bottom:3px}
+.sim-fat{font-size:13px;font-weight:700;color:var(--carvao)}
+.sim-luc{font-size:10px;font-weight:600;margin-top:2px}
+
+.tip-box{margin-top:14px;padding:12px 14px;background:var(--amber-l);border-left:3px solid var(--amber);border-radius:var(--r);font-size:12px;color:var(--carvao2);line-height:1.6}
+
+/* RODAPÉ */
+.footer{background:var(--carvao);padding:16px 24px;margin-top:32px}
+.footer-inner{max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.footer-brand{display:flex;align-items:center;gap:8px}
+.footer-logo{font-family:'DM Serif Display',serif;font-size:14px;color:#FAF7F2}
+.footer-sep{color:rgba(255,255,255,.2)}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.35)}
+.footer-license{font-size:10px;color:rgba(255,255,255,.22);line-height:1.4;max-width:360px}
+
+@media(max-width:480px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <div class="logo"><div class="logo-dot"></div>Nauta</div>
+    <div class="logo-sub">Diagnóstico de Preço</div>
+  </div>
+  <div class="header-badge">Calculadora Universal</div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <h1 class="hero-title">Diagnóstico do preço praticado</h1>
+    <p class="hero-sub">Preencha os campos abaixo e descubra em tempo real se o seu preço gera lucro.</p>
+  </div>
+
+  <div class="grid">
+
+    <!-- COLUNA ESQUERDA -->
+    <div>
+
+      <!-- PREÇO -->
+      <div class="preco-box">
+        <div class="preco-box-lbl">Preço que você cobra (por unidade / pedido / serviço)</div>
+        <div class="preco-inp-wrap">
+          <span class="preco-prefix">R$</span>
+          <input class="preco-inp" type="number" id="preco-atual" step="0.01" placeholder="0,00" inputmode="decimal" oninput="calcular()">
+        </div>
+        <div class="preco-hint">Digite o valor que você cobra do cliente hoje</div>
+      </div>
+
+      <!-- INSUMOS -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🧴</span>Insumos e materiais</div>
+        <div class="section-header">
+          <span class="section-header-lbl">O que você gasta para produzir?</span>
+          <span class="section-header-sub">✏️ nomes editáveis</span>
+        </div>
+        <div id="insumos-wrap"></div>
+        <button class="btn-add" onclick="adicionarInsumo()">＋ Adicionar insumo</button>
+        <div class="bloco-total">
+          <span>Total de insumos</span>
+          <strong id="total-ins">R$ 0,00</strong>
+        </div>
+      </div>
+
+      <!-- CUSTO FIXO -->
+      <div class="card">
+        <div class="card-title"><span class="ico">🏢</span>Custo fixo por unidade</div>
+        <div class="fg">
+          <input class="fi" type="number" id="custo-fixo" step="0.01" inputmode="decimal" placeholder="Ex: 15,00" oninput="calcular()">
+          <div class="fi-hint">Aluguel, energia, internet e outros fixos ÷ pelo número de pedidos/mês</div>
+        </div>
+      </div>
+
+      <!-- OUTROS CUSTOS -->
+      <div class="card">
+        <div class="card-title"><span class="ico">📊</span>Outros custos e taxas</div>
+        <div class="section-header">
+          <span class="section-header-lbl">Taxas, impostos, comissões...</span>
+          <span class="section-header-sub">escolha % ou R$</span>
+        </div>
+        <div id="outros-wrap"></div>
+        <button class="btn-add" onclick="adicionarOutro()">＋ Adicionar custo</button>
+        <div class="bloco-total">
+          <span>Total de outros custos</span>
+          <strong id="total-outros">R$ 0,00</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- COLUNA DIREITA: RESULTADO -->
+    <div class="card" style="position:sticky;top:16px">
+      <div class="card-title"><span class="ico">🔍</span>Diagnóstico em tempo real</div>
+      <div id="resultado-wrap">
+        <div class="resultado-vazio">
+          <div class="ico">💲</div>
+          <p>Informe o preço que você cobra<br>e preencha os custos ao lado<br>para ver o diagnóstico.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- RODAPÉ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">Nauta</span>
+      <span class="footer-sep">·</span>
+      <span class="footer-copy">Diagnóstico de Preço</span>
+    </div>
+    <span class="footer-license">© 2024 Nauta — Todos os direitos reservados. Uso pessoal e intransferível. Proibida a reprodução ou revenda.</span>
+  </div>
+</footer>
+
+<script>
+/* ══ INSUMOS ══ */
+let insCount = 0;
+
+function criarLinhaInsumo(lbl, ph){
+  insCount++;
+  const id = 'ins_' + insCount;
+  const div = document.createElement('div');
+  div.className = 'ins-row';
+  div.innerHTML = `
+    <div class="ins-row-nome">
+      <span class="pencil">✏️</span>
+      <input type="text" placeholder="${lbl}" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="ins-row-val">
+      <span class="ins-row-prefix">R$</span>
+      <input class="ins-row-inp" type="number" id="${id}" step="0.01" inputmode="decimal" placeholder="${ph}" oninput="calcular()">
+      <button class="ins-row-del" onclick="this.closest('.ins-row').remove();calcular()" title="Remover">✕</button>
+    </div>`;
+  return div;
+}
+
+function adicionarInsumo(lbl, ph){
+  const wrap = document.getElementById('insumos-wrap');
+  const row = criarLinhaInsumo(lbl || 'Nome do insumo...', ph || 'Ex: 0,00');
+  wrap.appendChild(row);
+  if(!lbl) row.querySelector('.ins-row-nome input').focus();
+}
+
+function getTotalInsumos(){
+  let t = 0;
+  document.querySelectorAll('#insumos-wrap .ins-row-inp').forEach(i => t += parseFloat(i.value)||0);
+  return t;
+}
+
+/* ══ OUTROS CUSTOS ══ */
+let outroCount = 0;
+
+function criarLinhaOutro(lbl){
+  outroCount++;
+  const id = 'out_' + outroCount;
+  const div = document.createElement('div');
+  div.className = 'outro-row';
+  div.dataset.tipo = 'pct'; // default: percentual
+  div.innerHTML = `
+    <div class="outro-top">
+      <span class="pencil">✏️</span>
+      <input type="text" placeholder="${lbl || 'Ex: Taxa cartão, iFood, imposto...'}" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="outro-bottom">
+      <div class="tipo-toggle">
+        <button class="tipo-btn ativo" onclick="setTipo(this,'pct')">%</button>
+        <button class="tipo-btn" onclick="setTipo(this,'rs')">R$</button>
+      </div>
+      <div class="outro-inp-wrap">
+        <span class="outro-prefix" id="pfx_${id}">%</span>
+        <input class="outro-inp" type="number" id="${id}" step="0.01" inputmode="decimal" placeholder="0,00" oninput="calcular()">
+      </div>
+      <button class="outro-del" onclick="this.closest('.outro-row').remove();calcular()" title="Remover">✕</button>
+    </div>`;
+  return div;
+}
+
+function setTipo(btn, tipo){
+  const row = btn.closest('.outro-row');
+  row.dataset.tipo = tipo;
+  row.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('ativo'));
+  btn.classList.add('ativo');
+  // update prefix
+  const pfx = row.querySelector('.outro-prefix');
+  pfx.textContent = tipo === 'pct' ? '%' : 'R$';
+  calcular();
+}
+
+function adicionarOutro(lbl){
+  const wrap = document.getElementById('outros-wrap');
+  const row = criarLinhaOutro(lbl);
+  wrap.appendChild(row);
+  if(!lbl) row.querySelector('.outro-top input[type=text]').focus();
+}
+
+function getTotalOutros(preco){
+  let t = 0;
+  document.querySelectorAll('#outros-wrap .outro-row').forEach(row => {
+    const inp = row.querySelector('.outro-inp');
+    const val = parseFloat(inp.value)||0;
+    if(row.dataset.tipo === 'pct') t += preco * val / 100;
+    else t += val;
+  });
+  return t;
+}
+
+/* ══ CALCULAR ══ */
+function fmt(v){ return 'R$ ' + v.toFixed(2).replace('.',',') }
+function fmtP(v){ return v.toFixed(1).replace('.',',') + '%' }
+
+function getVerdict(m){
+  if(m >= 30) return {cor:'var(--verde)', bg:'var(--verde-l)', ico:'🟢', sit:'Excelente', sub:'Margem saudável — parabéns!'};
+  if(m >= 15) return {cor:'var(--verde)', bg:'var(--verde-l)', ico:'✅', sit:'Saudável',   sub:'Você cobre os custos e tem lucro'};
+  if(m >   0) return {cor:'var(--amber)', bg:'var(--amber-l)', ico:'⚠️', sit:'Na borda',   sub:'Lucro pequeno — considere reajustar'};
+  if(m === 0) return {cor:'var(--cinza)', bg:'var(--cream3)',  ico:'⚖️', sit:'No zero',    sub:'Cobre os custos, mas sem lucro'};
+  return             {cor:'var(--rubi)',  bg:'var(--rubi-l)',  ico:'❌', sit:'Prejuízo',   sub:'Esse preço não sustenta o negócio'};
+}
+
+function calcular(){
+  const preco = parseFloat(document.getElementById('preco-atual').value)||0;
+  const ins   = getTotalInsumos();
+  const fixo  = parseFloat(document.getElementById('custo-fixo').value)||0;
+  const out   = getTotalOutros(preco);
+
+  document.getElementById('total-ins').textContent    = fmt(ins);
+  document.getElementById('total-outros').textContent = fmt(out);
+
+  const wrap = document.getElementById('resultado-wrap');
+  if(!preco){
+    wrap.innerHTML = `<div class="resultado-vazio"><div class="ico">💲</div><p>Informe o preço que você cobra<br>e preencha os custos ao lado<br>para ver o diagnóstico.</p></div>`;
+    return;
+  }
+
+  const total = ins + fixo + out;
+  const lucro = preco - total;
+  const marg  = preco > 0 ? (lucro / preco * 100) : 0;
+
+  // preço mínimo (sem lucro) — iterativo para contemplar % nos outros custos
+  // pMin = (ins + fixo + outFixo) / (1 - outPctTotal/100)
+  let outFixo = 0, outPct = 0;
+  document.querySelectorAll('#outros-wrap .outro-row').forEach(row => {
+    const val = parseFloat(row.querySelector('.outro-inp').value)||0;
+    if(row.dataset.tipo === 'pct') outPct += val;
+    else outFixo += val;
+  });
+  const pMin  = outPct < 100 ? (ins + fixo + outFixo) / (1 - outPct/100) : 0;
+  const diff  = preco - pMin;
+  const pIdeal = outPct < 100 ? (ins + fixo + outFixo) / (1 - (outPct + 30)/100) : 0;
+
+  const v      = getVerdict(marg);
+  const barPct = Math.max(0, Math.min(100, marg));
+  const barCol = marg < 0 ? 'var(--rubi)' : marg < 15 ? 'var(--amber)' : 'var(--verde)';
+
+  // linhas de outros custos detalhadas
+  let outLinhas = '';
+  document.querySelectorAll('#outros-wrap .outro-row').forEach(row => {
+    const nome = row.querySelector('.outro-top input[type=text]').value || 'Custo adicional';
+    const inp  = row.querySelector('.outro-inp');
+    const val  = parseFloat(inp.value)||0;
+    if(!val) return;
+    const custo = row.dataset.tipo === 'pct' ? preco * val / 100 : val;
+    const tag   = row.dataset.tipo === 'pct' ? ` (${val}%)` : '';
+    outLinhas += `<div class="dr dr-bg"><span>📌 ${nome}${tag}</span><span class="dr-val" style="color:var(--rubi)">− ${fmt(custo)}</span></div>`;
+  });
+
+  // simulação mensal
+  const qtds = [5, 10, 20, 30];
+  const simHtml = qtds.map(q => {
+    const fat = preco * q, luc = lucro * q;
+    const lc  = luc >= 0 ? 'var(--verde)' : 'var(--rubi)';
+    return `<div class="sim-cell">
+      <div class="sim-qty">${q}x/mês</div>
+      <div class="sim-fat">${fmt(fat)}</div>
+      <div class="sim-luc" style="color:${lc}">${luc>=0?'+':''}${fmt(luc)}</div>
+    </div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="verdict" style="background:${v.bg}">
+      <div class="verdict-ico">${v.ico}</div>
+      <div class="verdict-sit" style="color:${v.cor}">${v.sit}</div>
+      <div class="verdict-val" style="color:${v.cor}">${lucro>=0?'+':''}${fmt(lucro)}</div>
+      <div class="verdict-sub" style="color:${v.cor}">por unidade · margem ${fmtP(marg)}</div>
+    </div>
+
+    <div class="bar-wrap">
+      <div class="bar-labels"><span>Margem de lucro</span><strong style="color:${barCol}">${fmtP(marg)}</strong></div>
+      <div class="bar"><div class="bar-fill" style="width:${barPct}%;background:${barCol}"></div></div>
+    </div>
+
+    <div class="dr dr-bg"><span>💵 Preço cobrado</span><span class="dr-val">${fmt(preco)}</span></div>
+    ${ins>0?`<div class="dr dr-bg"><span>🧴 Insumos</span><span class="dr-val" style="color:var(--rubi)">− ${fmt(ins)}</span></div>`:''}
+    ${fixo>0?`<div class="dr dr-bg"><span>🏢 Custo fixo</span><span class="dr-val" style="color:var(--rubi)">− ${fmt(fixo)}</span></div>`:''}
+    ${outLinhas}
+    <div class="dr" style="background:${v.bg};border:1px solid ${v.cor}20">
+      <span style="font-weight:600">🎯 Lucro líquido</span>
+      <span class="dr-val" style="color:${v.cor};font-size:16px">${lucro>=0?'+':''}${fmt(lucro)}</span>
+    </div>
+
+    <hr class="divider">
+
+    <div class="comp-box">
+      <div class="comp-title">📌 Referência de preço</div>
+      <div class="comp-row"><span style="color:var(--cinza)">Preço mínimo (sem prejuízo)</span><strong>${fmt(pMin)}</strong></div>
+      <div class="comp-row"><span style="color:var(--cinza)">Seu preço atual</span><strong>${fmt(preco)}</strong></div>
+      <div class="comp-row" style="border-top:1px solid var(--cream3);padding-top:8px;margin-top:3px">
+        <span style="font-weight:600">Diferença</span>
+        <strong style="color:${diff>=0?'var(--verde)':'var(--rubi)'}">${diff>=0?'+':''}${fmt(diff)}</strong>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--cinza);margin-bottom:8px">📈 Simulação mensal</div>
+    <div class="sim-grid">${simHtml}</div>
+
+    ${marg<15&&pIdeal>0?`<div class="tip-box">💡 <strong>Sugestão:</strong> Para 30% de margem, o preço ideal seria <strong>${fmt(pIdeal)}</strong>.</div>`:''}
+  `;
+}
+
+/* ══ INIT — linhas padrão ══ */
+adicionarInsumo('Ex: Farinha, tecido, produto principal...', '0,00');
+adicionarInsumo('Ex: Embalagem, fita, saco...', '0,00');
+adicionarInsumo('Ex: Outros materiais...', '0,00');
+
+adicionarOutro('Ex: Taxa cartão');
+adicionarOutro('Ex: iFood / delivery');
+</script>
+</body>
+</html>
