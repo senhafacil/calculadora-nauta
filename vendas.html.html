@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nauta — Diagnóstico de Preço</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF7F2;--cream2:#F3EEE6;--cream3:#EAE3D6;
+  --terra:#C17B4E;--terra-d:#9B5E35;--terra-l:#F0DDD0;
+  --verde:#3D8B5F;--verde-l:#D4EDDF;
+  --carvao:#2C2416;--carvao2:#4A3F30;
+  --cinza:#7A6F62;--cinza-l:#C5BDB3;
+  --branco:#FFFDF9;--borda:#E0D8CE;
+  --r:10px;--r-l:16px;
+}
+body{font-family:'DM Sans',sans-serif;font-size:15px;color:var(--carvao);background:var(--cream);line-height:1.6}
+a{text-decoration:none}
+
+/* HERO */
+.hero{background:var(--carvao);padding:60px 24px;text-align:center}
+.hero-badge{display:inline-block;background:var(--verde);color:var(--verde-l);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px}
+.hero-title{font-family:'DM Serif Display',serif;font-size:42px;color:#FAF7F2;line-height:1.15;margin-bottom:16px;max-width:700px;margin-left:auto;margin-right:auto}
+.hero-title span{color:var(--terra)}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.55);max-width:520px;margin:0 auto 32px;line-height:1.6}
+.btn-comprar{
+  display:inline-block;background:var(--terra);color:#FAF7F2;
+  font-family:'DM Sans',sans-serif;font-size:17px;font-weight:700;
+  padding:16px 40px;border-radius:var(--r-l);
+  transition:background .2s,transform .15s;
+  box-shadow:0 4px 24px rgba(193,123,78,.35);
+}
+.btn-comprar:hover{background:var(--terra-d);transform:translateY(-2px)}
+.hero-preco{margin-top:14px;font-size:13px;color:rgba(255,255,255,.35)}
+.hero-preco strong{color:rgba(255,255,255,.7);font-size:15px}
+
+/* PARA QUEM */
+.section{padding:56px 24px;max-width:860px;margin:0 auto}
+.section-title{font-family:'DM Serif Display',serif;font-size:30px;color:var(--carvao);text-align:center;margin-bottom:8px}
+.section-sub{text-align:center;color:var(--cinza);margin-bottom:36px;font-size:15px}
+.nichos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.nicho{background:var(--branco);border:1px solid var(--borda);border-radius:var(--r-l);padding:16px;text-align:center;font-size:13px;font-weight:600;color:var(--carvao2)}
+.nicho .n-ico{font-size:26px;display:block;margin-bottom:8px}
+
+/* COMO FUNCIONA */
+.como{background:var(--carvao);padding:56px 24px}
+.como-inner{max-width:860px;margin:0 auto}
+.como .section-title{color:#FAF7F2}
+.como .section-sub{color:rgba(255,255,255,.45)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:36px}
+.step{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-l);padding:24px}
+.step-num{width:36px;height:36px;border-radius:50%;background:var(--terra);color:#FAF7F2;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.step-title{font-size:15px;font-weight:700;color:#FAF7F2;margin-bottom:6px}
+.step-text{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6}
+
+/* BENEFICIOS */
+.beneficios{background:var(--branco);padding:56px 24px}
+.ben-inner{max-width:860px;margin:0 auto}
+.ben-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:36px}
+@media(max-width:580px){.ben-grid{grid-template-columns:1fr}}
+.ben{display:flex;align-items:flex-start;gap:14px;padding:18px;background:var(--cream);border-radius:var(--r-l);border:1px solid var(--borda)}
+.ben-ico{width:40px;height:40px;border-radius:10px;background:var(--terra-l);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.ben-title{font-size:14px;font-weight:700;color:var(--carvao);margin-bottom:3px}
+.ben-text{font-size:13px;color:var(--cinza);line-height:1.5}
+
+/* PREVIEW */
+.preview{background:var(--cream2);padding:56px 24px;text-align:center}
+.preview-inner{max-width:860px;margin:0 auto}
+.preview-img{background:var(--carvao);border-radius:var(--r-l);padding:28px;margin-top:32px;display:inline-block;width:100%;max-width:560px}
+.preview-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.06);margin-bottom:8px;font-size:13px}
+.preview-lbl{color:rgba(255,255,255,.5)}
+.preview-val{font-weight:700;color:#FAF7F2}
+.preview-verdict{background:var(--verde-l);border-radius:12px;padding:18px;margin-bottom:12px;text-align:center}
+.preview-verdict-sit{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--verde);margin-bottom:4px}
+.preview-verdict-val{font-family:'DM Serif Display',serif;font-size:34px;font-weight:700;color:var(--verde)}
+.preview-verdict-sub{font-size:12px;color:var(--verde);margin-top:3px}
+
+/* CTA */
+.cta{background:var(--terra);padding:64px 24px;text-align:center}
+.cta-title{font-family:'DM Serif Display',serif;font-size:34px;color:#FAF7F2;margin-bottom:10px;max-width:580px;margin-left:auto;margin-right:auto}
+.cta-sub{color:rgba(255,255,255,.6);margin-bottom:32px;font-size:15px}
+.btn-branco{display:inline-block;background:#FAF7F2;color:var(--terra-d);font-family:'DM Sans',sans-serif;font-size:17px;font-weight:700;padding:16px 40px;border-radius:var(--r-l);transition:all .2s}
+.btn-branco:hover{background:#fff;transform:translateY(-2px)}
+.cta-preco{margin-top:14px;font-size:13px;color:rgba(255,255,255,.45)}
+.cta-preco strong{color:rgba(255,255,255,.8)}
+
+/* WHATS */
+.whats-btn{
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  width:56px;height:56px;border-radius:50%;
+  background:#25D366;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;box-shadow:0 4px 20px rgba(37,211,102,.4);
+  transition:transform .2s;
+}
+.whats-btn:hover{transform:scale(1.1)}
+
+/* FOOTER */
+.footer{background:var(--carvao);padding:24px;text-align:center}
+.footer-logo{font-family:'DM Serif Display',serif;font-size:18px;color:#FAF7F2;margin-bottom:6px}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.2)}
+
+@media(max-width:600px){
+  .hero-title{font-size:30px}
+  .cta-title{font-size:26px}
+  .steps{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">Ferramenta Digital</div>
+  <h1 class="hero-title">Você sabe se o seu preço<br>gera <span>lucro</span> — ou prejuízo?</h1>
+  <p class="hero-sub">O Nauta Diagnóstico de Preço mostra em segundos quanto você realmente ganha por venda — e o preço mínimo para nunca mais trabalhar no vermelho.</p>
+  <a href="https://pay.kiwify.com.br/Rb1KamH" class="btn-comprar">Quero meu diagnóstico agora →</a>
+  <div class="hero-preco">Acesso imediato por apenas <strong>R$ 27,00</strong></div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="section">
+  <h2 class="section-title">Para quem é essa ferramenta?</h2>
+  <p class="section-sub">Funciona para qualquer pequeno negócio que vende produtos ou serviços</p>
+  <div class="nichos-grid">
+    <div class="nicho"><span class="n-ico">🎂</span>Confeitaria</div>
+    <div class="nicho"><span class="n-ico">🍞</span>Padaria</div>
+    <div class="nicho"><span class="n-ico">🍱</span>Marmitaria</div>
+    <div class="nicho"><span class="n-ico">💅</span>Estética</div>
+    <div class="nicho"><span class="n-ico">✂️</span>Ateliê</div>
+    <div class="nicho"><span class="n-ico">🌸</span>Floricultura</div>
+    <div class="nicho"><span class="n-ico">🧶</span>Artesanato</div>
+    <div class="nicho"><span class="n-ico">🛍️</span>Loja / Revenda</div>
+    <div class="nicho"><span class="n-ico">👕</span>Estamparia</div>
+    <div class="nicho"><span class="n-ico">🔲</span>Vidraçaria</div>
+    <div class="nicho"><span class="n-ico">🍬</span>Doceria</div>
+    <div class="nicho"><span class="n-ico">⚙️</span>Serviços em geral</div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="como">
+  <div class="como-inner">
+    <h2 class="section-title">Como funciona?</h2>
+    <p class="section-sub">Simples, rápido e sem complicação</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Informe o preço que você cobra</div>
+        <div class="step-text">Digite o valor que você cobra do seu cliente hoje.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Preencha seus custos</div>
+        <div class="step-text">Insumos, custo fixo, taxas de cartão, delivery e impostos.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Veja o diagnóstico</div>
+        <div class="step-text">Em segundos você descobre o lucro real, a margem e o preço mínimo.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Simule seu mês</div>
+        <div class="step-text">Veja quanto vai ganhar com 5, 10, 20 ou 30 vendas no mês.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFÍCIOS -->
+<section class="beneficios">
+  <div class="ben-inner">
+    <h2 class="section-title">O que você vai ter</h2>
+    <p class="section-sub">Tudo que você precisa para precificar com segurança</p>
+    <div class="ben-grid">
+      <div class="ben">
+        <div class="ben-ico">🎯</div>
+        <div>
+          <div class="ben-title">Diagnóstico em tempo real</div>
+          <div class="ben-text">Veredicto instantâneo: Excelente, Saudável, Na borda ou Prejuízo.</div>
+        </div>
+      </div>
+      <div class="ben">
+        <div class="ben-ico">💰</div>
+        <div>
+          <div class="ben-title">Preço mínimo calculado</div>
+          <div class="ben-text">Saiba exatamente qual o menor preço que você pode cobrar sem ter prejuízo.</div>
+        </div>
+      </div>
+      <div class="ben">
+        <div class="ben-ico">📊</div>
+        <div>
+          <div class="ben-title">Simulação mensal</div>
+          <div class="ben-text">Veja sua projeção de lucro para diferentes volumes de vendas no mês.</div>
+        </div>
+      </div>
+      <div class="ben">
+        <div class="ben-ico">✏️</div>
+        <div>
+          <div class="ben-title">Insumos personalizáveis</div>
+          <div class="ben-text">Coloque os nomes dos seus ingredientes e adicione quantos quiser.</div>
+        </div>
+      </div>
+      <div class="ben">
+        <div class="ben-ico">📱</div>
+        <div>
+          <div class="ben-title">Funciona no celular</div>
+          <div class="ben-text">Acesse de qualquer dispositivo, sem instalar nada.</div>
+        </div>
+      </div>
+      <div class="ben">
+        <div class="ben-ico">⚡</div>
+        <div>
+          <div class="ben-title">Acesso imediato</div>
+          <div class="ben-text">Após a compra você recebe o link na hora e já pode usar.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREVIEW -->
+<section class="preview">
+  <div class="preview-inner">
+    <h2 class="section-title">Veja como é por dentro</h2>
+    <p class="section-sub">Interface simples e resultado claro</p>
+    <div class="preview-img">
+      <div class="preview-verdict">
+        <div class="preview-verdict-sit">✅ Saudável</div>
+        <div class="preview-verdict-val">+R$ 23,50</div>
+        <div class="preview-verdict-sub">por unidade · margem 47,0%</div>
+      </div>
+      <div class="preview-row"><span class="preview-lbl">Preço cobrado</span><span class="preview-val">R$ 50,00</span></div>
+      <div class="preview-row"><span class="preview-lbl">Insumos</span><span class="preview-val" style="color:#F2D8DC">− R$ 18,00</span></div>
+      <div class="preview-row"><span class="preview-lbl">Custo fixo</span><span class="preview-val" style="color:#F2D8DC">− R$ 8,50</span></div>
+      <div class="preview-row" style="background:rgba(61,139,95,.2)"><span class="preview-lbl" style="color:#D4EDDF;font-weight:700">Lucro líquido</span><span class="preview-val" style="color:#D4EDDF;font-size:16px">+R$ 23,50</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta">
+  <h2 class="cta-title">Chega de cobrar no achismo.<br>Comece a lucrar de verdade.</h2>
+  <p class="cta-sub">Acesso imediato. Funciona no celular. Sem complicação.</p>
+  <a href="https://pay.kiwify.com.br/Rb1KamH" class="btn-branco">Quero meu diagnóstico agora →</a>
+  <div class="cta-preco">Por apenas <strong>R$ 27,00</strong> — acesso imediato</div>
+</section>
+
+<!-- RODAPÉ -->
+<footer class="footer">
+  <div class="footer-logo">Nauta</div>
+  <div class="footer-copy">© 2024 Nauta — Todos os direitos reservados</div>
+</footer>
+
+<!-- BOTÃO WHATSAPP -->
+<a href="https://wa.me/5521964077618?text=Oi!%20Tenho%20interesse%20no%20Nauta%20Diagnóstico%20de%20Preço" class="whats-btn" target="_blank" title="Falar no WhatsApp">💬</a>
+
+</body>
+</html>
